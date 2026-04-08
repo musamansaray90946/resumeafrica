@@ -37,24 +37,18 @@ const createResume = async (req, res) => {
 
 const updateResume = async (req, res) => {
   try {
-    const { title, template, photo, fullName, email, phone, location, summary, experience, education, skills, languages, references, colorTheme, fontFamily } = req.body
+    const allowed = ['title','template','photo','fullName','firstName','lastName','jobTarget','email','phone','location','postalCode','linkedin','website','summary','experience','education','skills','languages','references','certifications','colorTheme','fontFamily']
     const data = {}
-    if (title !== undefined) data.title = title
-    if (template !== undefined) data.template = template
-    if (photo !== undefined) data.photo = photo
-    if (fullName !== undefined) data.fullName = fullName
-    if (email !== undefined) data.email = email
-    if (phone !== undefined) data.phone = phone
-    if (location !== undefined) data.location = location
-    if (summary !== undefined) data.summary = summary
-    if (experience !== undefined) data.experience = typeof experience === 'string' ? experience : JSON.stringify(experience)
-    if (education !== undefined) data.education = typeof education === 'string' ? education : JSON.stringify(education)
-    if (skills !== undefined) data.skills = typeof skills === 'string' ? skills : JSON.stringify(skills)
-    if (languages !== undefined) data.languages = typeof languages === 'string' ? languages : JSON.stringify(languages)
-    if (references !== undefined) data.references = typeof references === 'string' ? references : JSON.stringify(references)
-    if (colorTheme !== undefined) data.colorTheme = colorTheme
-    if (fontFamily !== undefined) data.fontFamily = fontFamily
-
+    for (const key of allowed) {
+      if (req.body[key] !== undefined) {
+        const val = req.body[key]
+        if (Array.isArray(val)) {
+          data[key] = JSON.stringify(val)
+        } else {
+          data[key] = val
+        }
+      }
+    }
     const resume = await prisma.resume.update({
       where: { id: parseInt(req.params.id) },
       data
