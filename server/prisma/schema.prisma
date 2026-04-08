@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  resumes   Resume[]
+}
+
+model Resume {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+  title       String   @default("Untitled Resume")
+  template    String   @default("classic")
+  photo       String?
+  fullName    String   @default("")
+  email       String   @default("")
+  phone       String   @default("")
+  location    String   @default("")
+  summary     String   @default("")
+  experience  String   @default("[]")
+  education   String   @default("[]")
+  skills      String   @default("[]")
+  languages   String   @default("[]")
+  references  String   @default("[]")
+  colorTheme  String   @default("#2563eb")
+  fontFamily  String   @default("Inter")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
