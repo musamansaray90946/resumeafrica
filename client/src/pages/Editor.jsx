@@ -76,6 +76,7 @@ export default function Editor() {
   }
 
   const handlePrint = () => {
+    window.print()
     const content = previewRef.current.innerHTML
     const win = window.open('', '_blank')
     win.document.write(`<!DOCTYPE html>
@@ -116,7 +117,7 @@ export default function Editor() {
   return (
     <div className="flex h-[calc(100vh-65px)]">
       {/* LEFT PANEL */}
-      <div className="w-[520px] border-r border-gray-200 bg-white flex flex-col">
+      <div id="editor-form" className="w-[520px] border-r border-gray-200 bg-white flex flex-col">
         <div className="p-4 border-b border-gray-100 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link to="/dashboard" className="text-gray-400 hover:text-gray-600">
@@ -186,7 +187,7 @@ export default function Editor() {
       </div>
 
       {/* RIGHT: LIVE PREVIEW */}
-      <div className="flex-1 bg-gray-100 overflow-y-auto p-8">
+      <div id="editor-preview" className="flex-1 bg-gray-100 overflow-y-auto p-8">
         <div className="sticky top-0 mb-4 flex justify-end z-10">
           <span className="text-xs bg-white px-3 py-1.5 rounded-full text-gray-500 shadow-sm">Live Preview — A4</span>
         </div>
@@ -528,6 +529,7 @@ function ClassicTemplate({ resume: r }) {
     </div>
   )
 }
+
 function ModernTemplate({ resume: r }) {
   const c = r.colorTheme
   const name = r.fullName || `${r.firstName} ${r.lastName}`.trim() || 'Your Name'
