@@ -84,112 +84,29 @@ export default function Editor() {
 <title>${resume.title}</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: ${resume.fontFamily}, sans-serif;
-    color: #1f2937;
-    line-height: 1.4;
-    background: white;
-  }
-  @page {
-    size: A4;
-    margin: 8mm;
-  }
+  body { font-family: ${resume.fontFamily}, sans-serif; color: #1f2937; line-height: 1.5; }
+  @page { size: A4; margin: 10mm; }
   @media print {
     body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    img { max-width: 80px !important; max-height: 80px !important; }
   }
-  .resume-wrapper {
-    width: 194mm;
-    max-width: 194mm;
-    margin: 0 auto;
-    overflow: hidden;
-  }
-  img {
-    max-width: 70px !important;
-    max-height: 70px !important;
-    border-radius: 50% !important;
-    object-fit: cover !important;
-  }
-  h1 { font-size: 22pt !important; line-height: 1.2 !important; margin-bottom: 2px !important; }
-  h2 { font-size: 10pt !important; text-transform: uppercase !important; letter-spacing: 1.5px !important; margin-bottom: 6px !important; padding-bottom: 3px !important; }
-  h3 { font-size: 10pt !important; line-height: 1.3 !important; }
-  p, span, li, div { font-size: 9pt !important; line-height: 1.4 !important; }
-  .text-xs, .text-sm { font-size: 8pt !important; }
-  
-  /* Fix flex layouts for print */
-  [style*="display: flex"], [class*="flex"] {
-    display: flex !important;
-  }
-  
-  /* Fix sidebar templates */
-  [style*="width: 180px"], [style*="width: 200px"] {
-    width: 55mm !important;
-    min-width: 55mm !important;
-    max-width: 55mm !important;
-    font-size: 8pt !important;
-    padding: 8mm 5mm !important;
-  }
-  [style*="width: 180px"] img, [style*="width: 200px"] img {
-    max-width: 55px !important;
-    max-height: 55px !important;
-    margin-bottom: 8px !important;
-  }
-  [style*="width: 180px"] h2, [style*="width: 200px"] h2 {
-    font-size: 8pt !important;
-    margin-bottom: 4px !important;
-  }
-  [style*="width: 180px"] p, [style*="width: 200px"] p {
-    font-size: 7.5pt !important;
-    margin-bottom: 2px !important;
-  }
-  
-  /* Fix bold header templates */
-  [style*="padding"] > div:first-child {
-    padding: 6mm 8mm !important;
-  }
-  
-  /* Skill tags */
-  [class*="rounded-full"], [class*="rounded-lg"] {
-    font-size: 8pt !important;
-    padding: 1px 6px !important;
-    display: inline-block !important;
-    margin: 1px !important;
-  }
-  
-  /* Sections spacing */
-  [class*="mb-5"], [class*="mb-6"] {
-    margin-bottom: 4mm !important;
-  }
-  [class*="mb-3"], [class*="mb-4"] {
-    margin-bottom: 2mm !important;
-  }
-  
-  /* Page content padding */
-  [class*="p-10"], [class*="p-8"] {
-    padding: 6mm 8mm !important;
-  }
-  
-  /* Min height for sidebar templates */
-  [class*="min-h-"] {
-    min-height: auto !important;
-  }
-  
-  .print-footer {
-    text-align: center;
-    font-size: 7pt;
-    color: #9ca3af;
-    margin-top: 4mm;
-    padding-top: 2mm;
-    border-top: 0.5px solid #e5e7eb;
-  }
+  img { max-width: 80px; max-height: 80px; border-radius: 50%; object-fit: cover; }
+  .resume-page { max-width: 210mm; margin: 0 auto; }
+  h1 { font-size: 24pt; }
+  h2 { font-size: 11pt; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; padding-bottom: 4px; }
+  h3 { font-size: 11pt; }
+  p, span, li { font-size: 10pt; }
+  .text-xs { font-size: 9pt; }
+  .footer-credit { text-align: center; font-size: 7pt; color: #9ca3af; margin-top: 20px; padding-top: 10px; border-top: 1px solid #e5e7eb; }
 </style>
 </head>
 <body>
-<div class="resume-wrapper">${content}</div>
-<div class="print-footer">Built with ResumeAfrica by Musa Mansaray • resumeafrica.vercel.app</div>
+<div class="resume-page">${content}</div>
+<div class="footer-credit">Built with ResumeAfrica — resumeafrica.vercel.app | Created by Musa Mansaray</div>
 </body>
 </html>`)
     win.document.close()
-    setTimeout(() => { win.print(); win.close() }, 700)
+    setTimeout(() => { win.print(); win.close() }, 600)
   }
 
   const progress = Math.round(((step + 1) / STEPS.length) * 100)
@@ -611,32 +528,32 @@ function ClassicTemplate({ resume: r }) {
     </div>
   )
 }
-
 function ModernTemplate({ resume: r }) {
   const c = r.colorTheme
   const name = r.fullName || `${r.firstName} ${r.lastName}`.trim() || 'Your Name'
   return (
-    <div className="flex min-h-[297mm]">
-      <div className="w-[180px] p-5 text-white text-xs" style={{ backgroundColor: c }}>
-        {r.photo && <img src={r.photo} alt="" className="w-24 h-24 rounded-full object-cover mx-auto mb-4 border-3 border-white/30" />}
+    <div style={{ display: 'flex', minHeight: '297mm' }}>
+      <div style={{ width: '180px', minWidth: '180px', padding: '20px', backgroundColor: c, color: 'white', fontSize: '12px' }}>
+        {r.photo && <img src={r.photo} alt="" style={{ width: '96px', height: '96px', borderRadius: '50%', objectFit: 'cover', display: 'block', margin: '0 auto 16px', border: '3px solid rgba(255,255,255,0.3)' }} />}
         <SideSection title="Contact">
-          {r.email && <p className="mb-1.5 break-all opacity-90">{r.email}</p>}
-          {r.phone && <p className="mb-1.5 opacity-90">{r.phone}</p>}
-          {r.location && <p className="mb-1.5 opacity-90">{r.location} {r.postalCode}</p>}
-          {r.linkedin && <p className="mb-1.5 break-all opacity-90">{r.linkedin}</p>}
-          {r.website && <p className="mb-1.5 break-all opacity-90">{r.website}</p>}
+          {r.email && <p style={{ marginBottom: '6px', wordBreak: 'break-all', opacity: 0.9 }}>{r.email}</p>}
+          {r.phone && <p style={{ marginBottom: '6px', opacity: 0.9 }}>{r.phone}</p>}
+          {r.location && <p style={{ marginBottom: '6px', opacity: 0.9 }}>{r.location} {r.postalCode}</p>}
+          {r.linkedin && <p style={{ marginBottom: '6px', wordBreak: 'break-all', opacity: 0.9 }}>{r.linkedin}</p>}
+          {r.website && <p style={{ marginBottom: '6px', wordBreak: 'break-all', opacity: 0.9 }}>{r.website}</p>}
         </SideSection>
-        {r.skills?.length > 0 && <SideSection title="Skills">{r.skills.map((s,i) => <p key={i} className="opacity-90 mb-1">{s}</p>)}</SideSection>}
-        {r.languages?.length > 0 && <SideSection title="Languages">{r.languages.map((l,i) => <p key={i} className="opacity-90 mb-1">{l.name} — {l.level}</p>)}</SideSection>}
-        {r.certifications?.length > 0 && <SideSection title="Certifications">{r.certifications.map((cert,i) => <p key={i} className="opacity-90 mb-1">{cert.name} {cert.year && `(${cert.year})`}</p>)}</SideSection>}
+        {r.skills?.length > 0 && <SideSection title="Skills">{r.skills.map((s,i) => <p key={i} style={{ opacity: 0.9, marginBottom: '4px' }}>{s}</p>)}</SideSection>}
+        {r.languages?.length > 0 && <SideSection title="Languages">{r.languages.map((l,i) => <p key={i} style={{ opacity: 0.9, marginBottom: '4px' }}>{l.name} — {l.level}</p>)}</SideSection>}
+        {r.certifications?.length > 0 && <SideSection title="Certifications">{r.certifications.map((cert,i) => <p key={i} style={{ opacity: 0.9, marginBottom: '4px' }}>{cert.name} {cert.year && `(${cert.year})`}</p>)}</SideSection>}
       </div>
-      <div className="flex-1 p-8">
-        <h1 className="text-2xl font-bold mb-0.5" style={{ color: c }}>{name}</h1>
-        {r.jobTarget && <p className="text-gray-600 font-medium text-sm">{r.jobTarget}</p>}
-        {r.summary && <div className="text-xs text-gray-600 leading-relaxed mt-3 mb-5" dangerouslySetInnerHTML={{ __html: r.summary }} />}
+      <div style={{ flex: 1, padding: '32px' }}>
+        <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '2px', color: c }}>{name}</h1>
+        {r.jobTarget && <p style={{ color: '#4b5563', fontWeight: 500, fontSize: '14px' }}>{r.jobTarget}</p>}
+        {r.summary && <div style={{ fontSize: '12px', color: '#4b5563', lineHeight: 1.6, marginTop: '12px', marginBottom: '20px' }} dangerouslySetInnerHTML={{ __html: r.summary }} />}
         {r.experience?.length > 0 && <Sec t="Experience" c={c}>{r.experience.map((e,i) => <ExpBlock key={i} e={e} c={c} />)}</Sec>}
         {r.education?.length > 0 && <Sec t="Education" c={c}>{r.education.map((e,i) => <EduBlock key={i} e={e} />)}</Sec>}
-        {r.references?.length > 0 && <Sec t="References" c={c}><div className="grid grid-cols-2 gap-3">{r.references.map((ref,i) => <div key={i}><p className="font-semibold text-xs text-gray-900">{ref.name}</p><p className="text-xs text-gray-500">{ref.position}</p><p className="text-xs text-gray-400">{ref.contact}</p></div>)}</div></Sec>}
+        {r.references?.length > 0 && <Sec t="References" c={c}><div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>{r.references.map((ref,i) => <div key={i}><p style={{ fontWeight: 600, fontSize: '12px', color: '#111827' }}>{ref.name}</p><p style={{ fontSize: '11px', color: '#6b7280' }}>{ref.position}</p><p style={{ fontSize: '11px', color: '#9ca3af' }}>{ref.contact}</p></div>)}</div></Sec>}
+        <div style={{ textAlign: 'center', fontSize: '9px', color: '#9ca3af', marginTop: '20px', paddingTop: '8px', borderTop: '1px solid #e5e7eb' }}>Built with ResumeAfrica by Musa Mansaray</div>
       </div>
     </div>
   )
